@@ -82,7 +82,7 @@ if [[ -x "/opt/local/bin/port" ]]; then
     
     sudo port selfupdate
 
-    sudo port install ${gcc_cmd} \    
+    sudo port install ${gcc_cmd} \
     openmpi-${gcc_cmd} \
     boost +openmpi \
     cgal ccache flex \
@@ -146,7 +146,7 @@ fi
 
 echo "Updating the bashrc as appropriate, for foamInstall & WM_COMPILER"
 
-gcc_cmd=`echo ${foo:0:1} | tr  '[a-z]' '[A-Z]'`${gcc_cmd:1}
+gcc_cmd="$(tr '[:lower:]' '[:upper:]' <<< ${gcc_cmd:0:1})${gcc_cmd:1}"
 
 sedeasy "^foamInstall=.*" "foamInstall=${mount_path}" etc/bashrc
 sedeasy "^export WM_COMPILER=.*" "export WM_COMPILER=${gcc_cmd}" etc/bashrc

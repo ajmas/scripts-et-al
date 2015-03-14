@@ -169,7 +169,7 @@ echo
 
 echo "First we do a clean, to ensure previous artifacts don't cause issues"
 
-#./wmake/wcleanAll 2>&1 | tee "${git_repo_local}/${log_file}"
+./wmake/wcleanAll 2>&1 | tee "${git_repo_local}/${log_file}"
 
 echo "Now doing the build"
 

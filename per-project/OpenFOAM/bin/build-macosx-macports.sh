@@ -169,11 +169,11 @@ echo
 
 echo "First we do a clean, to ensure previous artifacts don't cause issues"
 
-./wmake/wcleanAll 2>&1 | tee "${git_repo_local}/${log_file}"
+./wmake/wcleanAll 2>&1 | tee "${log_file}"
 
 echo "Now doing the build"
 
-./Allwmake 2>&1 | tee "${git_repo_local}/${log_file}"
+./Allwmake 2>&1 | tee "${log_file}"
 
 if [ $? -ne 0 ]; then
     echo

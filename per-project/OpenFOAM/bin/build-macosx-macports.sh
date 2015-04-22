@@ -26,17 +26,33 @@
 ## -----------
 ##
 ## This script does the following
-##    - Creates & mounts the case-sensitive HFS+ Disk image
-##    - Install the necessary ports from MacPorts
-##    - Checks to see that necessary environment dependencies are in place
-##    - Clones the Git project
-##    - Builds the source code
+##   - Creates & mounts the case-sensitive HFS+ Disk image
+##   - Install the necessary ports from MacPorts
+##   - Checks to see that necessary environment dependencies are in place
+##   - Clones the Git project
+##   - Builds the source code
 
-git_repo="https://github.com/ajmas/OpenFOAM-2.3.x.git"
+##
+## Disclaimer
+## ----------
+##
+## THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT
+## NOT LIMITED TO,  THE IMPLIED WARRANTIES  OF MERCHANTABILITY  AND FITNESS FOR A PARTICULAR 
+## PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL  THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY  
+## DIRECT,  INDIRECT,  INCIDENTAL,  SPECIAL,  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING 
+## BUT NOT LIMITED TO,  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;  LOSS OF USE,  DATA, OR 
+## PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+## IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+## WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+##
+##
+
+git_repo="https://github.com/ajmas/OpenFOAM-MacOSX-2.3.x.git"
 git_repo_local="OpenFOAM-2.3.x"
 git_branch="macosx-forum-patched"
 vol_name="OpenFOAM-Development-2.3.x"
 image_name="${vol_name}.dmg"
+image_path="$HOME/${image_name}"
 mount_path="/Volumes/${vol_name}"
 gcc_cmd=gcc48
 log_file=build.log
@@ -52,9 +68,9 @@ function sedeasy {
 echo "MacOS X version is ..... $(sw_vers -productVersion)"
 
 # We need a case-sensitive file system to do our work on
-if [[ ! -f "openfoam-development-2.3.x.dmg" ]]; then
+if [[ ! -f "${image_path}" ]]; then
     echo "Creating cases-sensitive FS, in a disk image"
-    hdiutil create -size 3g -fs "Case-sensitive Journaled HFS+" -volname "${vol_name}"  ${image_name}
+    hdiutil create -size 3g -fs "Case-sensitive Journaled HFS+" -volname "${vol_name}"  ${image_path}
     if [ $? -ne 0 ]; then
         echo "hditutil exited with non-zero exit code. Please resolve issue before continuing."
         exit 1
@@ -63,7 +79,7 @@ fi
 
 if [[ ! -d "${mount_path}" ]]; then
     echo "Mounting disk image at '${mount_path}'"
-    hdiutil mount ${image_name}
+    hdiutil mount ${image_path}
     if [ $? -ne 0 ]; then
         echo "hditutil exited with non-zero exit code. Please resolve issue before continuing."
         exit 1
